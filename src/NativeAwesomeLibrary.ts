@@ -17,7 +17,6 @@ export interface Spec extends TurboModule {
   disableExitByUnpinning(): void;
 
   requestDeviceAdminPermission(): void;
-
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('AwesomeLibrary');

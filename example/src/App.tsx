@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   AppState,
   type AppStateStatus,
@@ -8,8 +8,8 @@ import {
   Text,
   View,
   Switch,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage"; // Import AsyncStorage
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 import {
   startLockTask,
   stopLockTask,
@@ -17,18 +17,19 @@ import {
   disableExitByUnpinning,
   clearDeviceOwnerApp,
   isAppInLockTaskMode,
-  requestDeviceAdminPermission
-} from "react-native-awesome-library";
+  requestDeviceAdminPermission,
+} from 'react-native-awesome-library';
 
 export default function App() {
   const [isKioskEnabled, setIsKioskEnabled] = useState(false);
   const [shouldExitByUnpinning, setShouldExitByUnpinning] = useState(false);
-  const [shouldKeepAskingToStartKiosk, setShouldKeepAskingToStartKiosk] = useState(false);
+  const [shouldKeepAskingToStartKiosk, setShouldKeepAskingToStartKiosk] =
+    useState(false);
 
   // Load kiosk mode setting from AsyncStorage on app startup
   useEffect(() => {
     const loadKioskMode = async () => {
-      const storedKioskMode = await AsyncStorage.getItem("isKioskEnabled");
+      const storedKioskMode = await AsyncStorage.getItem('isKioskEnabled');
       if (storedKioskMode !== null) {
         setIsKioskEnabled(JSON.parse(storedKioskMode));
       }
@@ -37,7 +38,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (Platform.OS !== "android") {
+    if (Platform.OS !== 'android') {
       return;
     }
 
@@ -50,7 +51,10 @@ export default function App() {
 
     // Persist the kiosk mode setting to AsyncStorage whenever it changes
     const saveKioskMode = async () => {
-      await AsyncStorage.setItem("isKioskEnabled", JSON.stringify(isKioskEnabled));
+      await AsyncStorage.setItem(
+        'isKioskEnabled',
+        JSON.stringify(isKioskEnabled)
+      );
     };
     saveKioskMode();
   }, [isKioskEnabled]);
@@ -83,14 +87,17 @@ export default function App() {
     const onBackPress = () => {
       return isKioskEnabled; // Prevent back press if kiosk mode is enabled
     };
-    const backHandler = BackHandler.addEventListener("hardwareBackPress", onBackPress);
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      onBackPress
+    );
 
     const onPause = (nextAppState: AppStateStatus) => {
-      if (nextAppState !== "active") {
+      if (nextAppState !== 'active') {
         // No function for onRecentButtonPressed, so removing it
       }
     };
-    const pauseHandler = AppState.addEventListener("change", onPause);
+    const pauseHandler = AppState.addEventListener('change', onPause);
 
     return () => {
       backHandler.remove();
@@ -113,7 +120,10 @@ export default function App() {
 
       <View style={styles.switchContainer}>
         <Text>Lock Task Mode</Text>
-        <Switch value={isKioskEnabled} onValueChange={(value) => setIsKioskEnabled(value)} />
+        <Switch
+          value={isKioskEnabled}
+          onValueChange={(value) => setIsKioskEnabled(value)}
+        />
       </View>
 
       <View style={styles.switchContainer}>
@@ -144,7 +154,9 @@ export default function App() {
       </View>
 
       <Text style={styles.statusText}>
-        {isKioskEnabled ? "Lock Task Mode is Enabled" : "Lock Task Mode is Disabled"}
+        {isKioskEnabled
+          ? 'Lock Task Mode is Enabled'
+          : 'Lock Task Mode is Disabled'}
       </Text>
     </View>
   );
@@ -153,9 +165,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
     gap: 10,
   },
   header: {
@@ -163,10 +175,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   switchContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "80%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '80%',
     marginVertical: 10,
   },
   buttonContainer: {
@@ -174,8 +186,8 @@ const styles = StyleSheet.create({
   },
   button: {
     fontSize: 16,
-    color: "blue",
-    textDecorationLine: "underline",
+    color: 'blue',
+    textDecorationLine: 'underline',
   },
   statusText: {
     fontSize: 16,
